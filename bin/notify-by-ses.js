@@ -50,6 +50,11 @@ var aws = require('aws-lib'),
     alias: 'logFile',
     default: '/var/log/notify-by-ses.log'
   })
+  .options('y', {
+    alias: 'type',
+    default: 'Service'
+    describe: 'Type of notification, serveric or host.'
+  })
   .argv;
 
 var ses = aws.createSESClient(
@@ -76,7 +81,7 @@ var ses = aws.createSESClient(
       'Date/Time: ' + (new Date).toString() + '</p><p>' +
       'Additional Info:</p><p>' + argv.longHostOutput + '</p>',
   	'Message.Subject.Charset': 'UTF-8',
-  	'Message.Subject.Data': '** ' + argv.notificationType + ' Service Alert: ' +
+  	'Message.Subject.Data': '** ' + argv.notificationType + ' ' + argv.type + ' Alert: ' +
       argv.hostName + '/' + argv.hostState + '**',
   	'Source': argv.contactPager
   },
