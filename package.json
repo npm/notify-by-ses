@@ -1,6 +1,6 @@
 {
   "name": "notify-by-ses",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A script for sending Nagios notifications using SES.",
   "main": "index.js",
   "bin": "./bin/notify-by-ses.js",

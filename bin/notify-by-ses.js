@@ -52,7 +52,7 @@ var aws = require('aws-lib'),
   })
   .options('y', {
     alias: 'type',
-    default: 'Service'
+    default: 'Service',
     describe: 'Type of notification, serveric or host.'
   })
   .argv;
