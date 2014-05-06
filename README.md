@@ -24,9 +24,17 @@ define contact {
 }
 
 define command {
-  command_name    notify-service-by-pagerduty
+  command_name    notify-by-ses
   command_line   /usr/bin/notify-by-ses -k "{{nagios_aws_access_key_id}}" -s "{{nagios_aws_access_key_secret}}" -n "$NOTIFICATIONTYPE$" -h "$HOSTNAME$" -t "$HOSTSTATE$" -d "$SERVICEDISPLAYNAME$" -a "$HOSTADDRESS$" -o "$LONGHOSTOUTPUT$" -p "$CONTACTPAGER$"
 }
 ```
 
-* *notify-by-ses* is designed to be used along with the *ansible-nagios* role.
+Configuration Options
+--------------------
+
+* **-r**: use the **-r** flag to specify an AWS region, defaults to 'email.us-east-1.amazonaws.com'.
+
+Using With Ansible
+-------------------
+
+* *notify-by-ses* is designed to be used along with the [ansible-nagios](https://github.com/npm/ansible-nagios).

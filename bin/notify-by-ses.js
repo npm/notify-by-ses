@@ -41,11 +41,21 @@ var aws = require('aws-lib'),
     alias: 'contactPager',
     describe: 'Contact Pager Email'
   })
+  .options('r', {
+    alias: 'region',
+    describe: 'AWS Region',
+    default: 'email.us-east-1.amazonaws.com'
+  })
+  .options('l', {
+    alias: 'logFile',
+    default: '/var/log/notify-by-ses.log'
+  })
   .argv;
 
 var ses = aws.createSESClient(
     argv.accessKeyId,
-    argv.secretAccessKey
+    argv.secretAccessKey,
+    {host: argv.region}
   ),
   sendArgs = {
   	'Destination.ToAddresses.member': [argv.contactPager],
@@ -69,10 +79,11 @@ var ses = aws.createSESClient(
   	'Message.Subject.Data': '** ' + argv.notificationType + ' Service Alert: ' +
       argv.hostName + '/' + argv.hostState + '**',
   	'Source': argv.contactPager
-  };
+  },
+  winston = require('winston');
 
-console.log('Arguments:', argv);
+winston.add(winston.transports.File, { filename: argv.logFile });
 
 ses.call('SendEmail', sendArgs, function(err, result) {
-  console.log(err, result);
+  winston.log('info', result);
 });
