@@ -41,6 +41,10 @@ var aws = require('aws-lib'),
     alias: 'contactPager',
     describe: 'Contact Pager Email'
   })
+  .options('f', {
+    alias: 'from',
+    default: 'From email address (defaults to contactPager)'
+  })
   .options('r', {
     alias: 'region',
     describe: 'AWS Region',
@@ -83,7 +87,7 @@ var ses = aws.createSESClient(
   	'Message.Subject.Charset': 'UTF-8',
   	'Message.Subject.Data': '** ' + argv.notificationType + ' ' + argv.type + ' Alert: ' +
       argv.hostName + '/' + argv.hostState + '**',
-  	'Source': argv.contactPager
+  	'Source': (argv.from || argv.contactPager)
   },
   winston = require('winston');
 
