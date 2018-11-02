@@ -57,6 +57,12 @@ var aws = require('aws-lib'),
   })
   .argv;
 
+
+// host notifications won't have a service name
+if (typeof argv.serviceDisplayName === 'undefined') {
+    argv.serviceDisplayName = "";
+}
+
 var ses = aws.createSESClient(
     argv.accessKeyId,
     argv.secretAccessKey,
@@ -82,7 +88,7 @@ var ses = aws.createSESClient(
       'Additional Info:</p><p>' + argv.longHostOutput + '</p>',
   	'Message.Subject.Charset': 'UTF-8',
   	'Message.Subject.Data': '** ' + argv.notificationType + ' ' + argv.type + ' Alert: ' +
-      argv.hostName + '/' + argv.hostState + '**',
+      argv.hostName + '/' + argv.serviceDisplayName + ' is ' + argv.hostState + '**',
   	'Source': argv.contactPager
   },
   winston = require('winston');
